@@ -12,5 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
+
+// Users
+Auth::routes();
+Route::post("/request", "RequestController@index")->name("request");
+
+// Subscribers
+Route::post("/subscribe", "SubscribeController@index")->name("subscribe");
+Route::post("/unsubscribe", "SubscribeController@unsubscribe")->name("unsubscribe");
+
+// For logged in admins 
+Route::get('/dashboard', 'HomeController@index')->name('dashboard');
