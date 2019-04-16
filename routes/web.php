@@ -13,15 +13,16 @@
 
 Route::get('/', function () {
     return view('landing');
-});
+})->name("landing");
 
 // Users
-Auth::routes();
-Route::post("/request", "RequestController@index")->name("request");
+// Auth::routes();
+Route::post("/login", "LoginController@login")->name("login");
+Route::post("/request", "RequestAcctController@newRequest")->name("requestAcct");
 
 // Subscribers
-Route::post("/subscribe", "SubscribeController@index")->name("subscribe");
+Route::post("/subscribe", "SubscribeController@subscribe")->name("subscribe");
 Route::post("/unsubscribe", "SubscribeController@unsubscribe")->name("unsubscribe");
 
-// For logged in admins 
-Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+// For logged in admins
+Route::get('/dashboard', 'HomeController@index')->name('dashboard')->middleware('auth');

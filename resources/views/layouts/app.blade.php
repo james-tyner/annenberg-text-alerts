@@ -21,6 +21,11 @@
 </head>
 <body>
     <div id="app">
+      <nav>
+        <img id="logo" src="http://interactives.uscannenbergmedia.com/media/FB%20horizontal%20lockup.png" alt="USC Annenberg Media">
+      </nav>
+
+
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">

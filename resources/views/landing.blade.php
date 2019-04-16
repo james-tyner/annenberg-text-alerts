@@ -29,6 +29,12 @@
           <h1>Catchy words</h1>
           <h5>Get the USC news that matters to you. Sign up for text alerts! We promise we’ll only text you when it’s important.</h5>
 
+          @if (isset($message) && isset($status))
+            <div id="message" class="text-{{$status}}">
+              {{$message}}
+            </div>
+          @endif
+
           <div id="form-with-tabs">
             <div id="tabs">
               <div class="tab" v-on:click="selected = 'signup'" :class="{'selected' : selected == 'signup'}">Sign up</div>
@@ -57,7 +63,7 @@
                 <div class="form-group">
                   <label for="optionalName">Name</label>
                   <input type="text" class="form-control {{ $errors->has('optionalName') ? ' is-invalid' : '' }}" id="optionalName" name="optionalName" placeholder="Tommy Trojan" aria-describedby="nameHelp">
-                  <small id="nameHelp" class="form-text text-muted">Giving us your name is totally optional.</small>
+                  <small id="nameHelp" class="form-text text-muted">Providing your name is totally optional.</small>
                   @if ($errors->has('optionalName'))
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $errors->first('optionalName') }}</strong>
@@ -96,7 +102,7 @@
                 @csrf
                 <div class="form-group">
                   <label for="adminEmail">Email</label>
-                  <input type="email" class="form-control {{ $errors->has('adminEmail') ? ' is-invalid' : '' }}" id="adminEmail" value="{{ old('adminEmail') }}" required placeholder="ttrojan@usc.edu">
+                  <input type="email" class="form-control {{ $errors->has('adminEmail') ? ' is-invalid' : '' }}" id="adminEmail" name="adminEmail" value="{{ old('adminEmail') }}" required placeholder="ttrojan@usc.edu">
                   @if ($errors->has('adminEmail'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('adminEmail') }}</strong>
@@ -104,10 +110,9 @@
                   @endif
                 </div>
 
-
                 <div class="form-group">
                   <label for="adminPass">Password</label>
-                  <input type="password" class="form-control {{ $errors->has('adminPass') ? ' is-invalid' : '' }}" id="adminPass" required>
+                  <input type="password" class="form-control {{ $errors->has('adminPass') ? ' is-invalid' : '' }}" id="adminPass" name="adminPass" required>
                   @if ($errors->has('adminPass'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('adminPass') }}</strong>
@@ -136,7 +141,7 @@
               </form>
 
               <!-- REQUEST ACCESS -->
-              <form id="unsubscribe-form" v-if="selected == 'request'" method="POST" action="{{ route('request') }}">
+              <form id="account-request-form" v-if="selected == 'request'" method="POST" action="{{ route('requestAcct') }}">
                 @csrf
                 <div class="form-group">
                   <p><a v-on:click="selected = 'admin'">← Nevermind… I already have an account</a></p>
@@ -144,7 +149,7 @@
 
                 <div class="form-group">
                   <label for="requestFirst">First name</label>
-                  <input type="text" class="form-control {{ $errors->has('requestFirst') ? ' is-invalid' : '' }}" id="requestFirst">
+                  <input type="text" name="requestFirst" class="form-control {{ $errors->has('requestFirst') ? ' is-invalid' : '' }}" id="requestFirst">
                   @if ($errors->has('requestEmail'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('requestFirst') }}</strong>
@@ -154,7 +159,7 @@
 
                 <div class="form-group">
                   <label for="requestLast">Last name</label>
-                  <input type="text" class="form-control {{ $errors->has('requestLast') ? ' is-invalid' : '' }}" id="requestLast">
+                  <input type="text" name="requestLast" class="form-control {{ $errors->has('requestLast') ? ' is-invalid' : '' }}" id="requestLast">
                   @if ($errors->has('requestEmail'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('requestLast') }}</strong>
@@ -164,17 +169,17 @@
 
                 <div class="form-group">
                   <label for="requestEmail">Email</label>
-                  <input type="email" class="form-control {{ $errors->has('requestEmail') ? ' is-invalid' : '' }}" id="requestEmail" placeholder="ttrojan@usc.edu">
+                  <input type="text" name="requestEmail" class="form-control {{ $errors->has('requestEmail') ? ' is-invalid' : '' }}" id="requestEmail" placeholder="ttrojan@usc.edu">
                   @if ($errors->has('requestEmail'))
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('adminEmail') }}</strong>
+                        <strong>{{ $errors->first('requestEmail') }}</strong>
                     </span>
                   @endif
                 </div>
 
                 <div class="form-group">
                   <button type="submit" class="btn btn-primary">Request account</button>
-                  <small class="form-text text-muted mt-2">You’ll be notified by email once an editor approves your request.</small>
+                  <small class="form-text text-muted mt-2">Accounts are only for Annenberg Media staff, obviously. You’ll be notified by email once an editor approves your request.</small>
                 </div>
               </form>
 

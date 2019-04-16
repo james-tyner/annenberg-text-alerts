@@ -20,7 +20,7 @@ class CreateTextAlertsUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('super')->default(0);
-            $table->unsignedBigInteger('phone');
+            $table->unsignedBigInteger('phone')->default(null);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -15,7 +15,7 @@ class CreateTextAlertsSubscribersTable extends Migration
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->unsignedBigInteger('phone');
             $table->rememberToken();
             $table->timestamps();
