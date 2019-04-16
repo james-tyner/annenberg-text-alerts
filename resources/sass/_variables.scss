@@ -1,9 +1,19 @@
 
-// Body
-// $body-bg: #f8fafc;
-
 // Typography
-$font-family-sans-serif: "Source Sans Pro", sans-serif;
+$font-family-sans-serif: "Source Sans Pro",
+// Safari for macOS and iOS (San Francisco)
+-apple-system,
+// Chrome < 56 for macOS (San Francisco)
+BlinkMacSystemFont,
+// Windows
+"Segoe UI",
+// Android
+"Roboto",
+// Basic web fallback
+"Helvetica Neue", Arial, sans-serif,
+// Emoji fonts
+"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
@@ -18,3 +28,11 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+$gray: #d8dadc;
+$darkgray: #333333;
+
+// Card border
+@mixin card-border {
+  border:1px solid $gray;
+  border-radius:8px;
+}
