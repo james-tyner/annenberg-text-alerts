@@ -10665,6 +10665,45 @@ nav #logo {
   margin-top: 2.5vw;
 }
 
+.app {
+  width: 95vw;
+  margin-left: 2.5vw;
+}
+
+.app h1,
+.app h2,
+.app h3,
+.app h4,
+.app h5,
+.app h6 {
+  font-weight: bold;
+}
+
+.app #logo {
+  margin-left: 0;
+  margin-top: 0;
+}
+
+.app nav {
+  border-bottom: 1px solid #d8dadc;
+}
+
+.app nav .navbar-collapse .navbar-nav .nav-item .nav-link {
+  font-weight: bold;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.app main {
+  width: 100%;
+  margin: 0.5rem 1rem;
+  display: block;
+}
+
+.app main h1 {
+  margin: 0;
+}
+
 p > a {
   font-weight: bold;
   cursor: pointer;
@@ -10750,5 +10789,24 @@ main #homepage-graphic {
 main #homepage-graphic img {
   width: 100%;
   display: block;
+}
+
+#dashboard-main {
+  grid-template-rows: 15vh auto;
+}
+
+#dashboard-main h1 {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #d8dadc;
+}
+
+#dashboard-main .nav-link {
+  font-weight: bold;
+  color: #333333;
+  font-size: 1.4em;
+}
+
+#dashboard-main .nav-link:hover {
+  color: #e3342f;
 }
 

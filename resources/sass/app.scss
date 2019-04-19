@@ -18,6 +18,46 @@ nav {
   }
 }
 
+.app {
+  width:95vw;
+  margin-left:2.5vw;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight:bold;
+  }
+
+  #logo {
+    margin-left:0;
+    margin-top:0;
+  }
+
+  nav {
+    border-bottom:1px solid $gray;
+
+    .navbar-collapse {
+      .navbar-nav {
+        .nav-item {
+          .nav-link {
+            font-weight:bold;
+            padding-left:1rem;
+            padding-right:1rem;
+          }
+        }
+      }
+    }
+  }
+
+  main {
+    width:100%;
+    margin:0.5rem 1rem;
+    display:block;
+
+    h1 {
+      margin:0;
+    }
+  }
+}
+
 p > a {
   font-weight:bold;
   cursor:pointer;
@@ -32,3 +72,4 @@ p > a {
 
 // Add styles for each page
 @import 'landing';
+@import 'dashboard';

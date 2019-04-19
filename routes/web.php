@@ -25,6 +25,11 @@ Route::post("/login", "LoginController@login")->name("login");
 Route::post("/request", "RequestAcctController@newRequest")->name("requestAcct");
 Route::post("/password/reset", "PasswordResetController@createAndSendToken")->name("createResetToken");
 Route::get("/password/reset/{token}", "PasswordResetController@showResetForm");
+
+Route::get("/logout", "LoginController@logout")->name("logout");
+
+//Have this in case user reloads on new password screen
+Route::get("/password/new", function(){ return redirect("/"); });
 Route::post("/password/new", "PasswordResetController@doThePWReset")->name("doPWReset");
 
 // Subscribers
