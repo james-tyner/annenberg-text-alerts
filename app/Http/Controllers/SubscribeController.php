@@ -9,17 +9,15 @@ use Validator;
 class SubscribeController extends Controller
 {
     public function subscribe(Request $request){
-      $input = $request->all();
-      $validation = Validator::make($input, [
-        'phoneNumber' => 'required|digits:10'
-      ]);
+      // Exists only for validation, does not render anything
 
-      if ($validation->fails()){
-        return view('landing', [
-          "message" => "We couldn’t subscribe you. Did you enter your phone number correctly?",
-          "status" => "danger"
-        ]);
-      }
+      $this->validate($request, [
+       'phoneNumber' => 'required|digits:10|unique:subscribers,phone'
+      ], [
+       'phoneNumber.required' => 'You have to submit a US or Canada phone number to subscribe',
+       'phoneNumber.digits' => 'You can only use a US or Canadian phone number that’s exactly 10 digits.',
+       'phoneNumber.unique' => 'That phone number is already subscribed to alerts!'
+     ]);
 
       $subscriber = new Subscriber();
       $subscriber->phone = request("phoneNumber");
@@ -27,34 +25,23 @@ class SubscribeController extends Controller
         $subscriber->name = request("optionalName");
       }
       $subscriber->save();
-
-      return view('landing', [
-        "message" => "You’re subscribed!",
-        "status" => "success"
-      ]);
     }
 
     public function unsubscribe(Request $request){
-      $input = $request->all();
-      $validation = Validator::make($input, [
-        'unsubscribePhone' => 'required|digits:10'
-      ]);
+      // Exists only for validation, does not render anything
 
-      if ($validation->fails()){
-        return view('landing', [
-          "message" => "We couldn’t unsubscribe you. Did you enter your phone number correctly?",
-          "status" => "danger"
-        ]);
-      }
+      $this->validate($request, [
+       'unsubscribePhone' => 'required|digits:10|exists:subscribers,phone'
+      ], [
+       'unsubscribePhone.required' => 'You have to submit a US or Canada phone number to unsubscribe',
+       'unsubscribePhone.digits' => 'You can only use a US or Canadian phone number that’s exactly 10 digits.',
+       'unsubscribePhone.exists' => 'That phone number isn’t subscribed to alerts.'
+     ]);
 
       $requestedSubscriber = Subscriber::where("phone", request("unsubscribePhone"))->firstOrFail();
       $requestedSubscriber->delete();
 
+      // TODO: Handle failure to find the number
       // TODO: Send one last text to confirm being unsubscribed
-
-      return view('landing', [
-        "message" => "You’re unsubscribed. Goodbye 👋",
-        "status" => "success"
-      ]);
     }
 }

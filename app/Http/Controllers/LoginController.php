@@ -7,10 +7,6 @@ use Auth;
 
 class LoginController extends Controller
 {
-    // public function index(){
-    //   return view("login");
-    // }
-
     public function login(){
       $loginWasSuccessful = Auth::attempt([
         "email" => request("adminEmail"),

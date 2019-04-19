@@ -10,6 +10,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Scripts -->
+        {{-- Axios in here for sending form validation errors to Vue component --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.3/vue.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
 
         <!-- Fonts -->
@@ -21,10 +24,10 @@
     </head>
     <body>
       <nav>
-        <img id="logo" src="http://interactives.uscannenbergmedia.com/media/FB%20horizontal%20lockup.png" alt="USC Annenberg Media">
+        <a href="//uscannenbergmedia.com"><img id="logo" src="http://interactives.uscannenbergmedia.com/media/FB%20horizontal%20lockup.png" alt="USC Annenberg Media"></a>
       </nav>
 
-      <main id="app">
+      <main id="landingApp">
         <section id="description">
           <h1>Catchy words</h1>
           <h5>Get the USC news that matters to you. Sign up for text alerts! We promise we’ll only text you when it’s important.</h5>
@@ -43,51 +46,39 @@
             </div>
             <div id="form-holder">
               <!-- SIGN UP FORM -->
-              <form id="signup-form" v-if="selected == 'signup'" method="POST" action="{{ route('subscribe') }}">
+              <form id="signup-form" v-if="selected == 'signup'" method="POST" v-on:submit.prevent="submitSignupForm">
                 @csrf
+                <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
                 <div class="form-group">
                   <label for="phoneNumber">Phone number</label>
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <div class="input-group-text">+1</div>
                     </div>
-                    <input type="tel" class="form-control {{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}" id="phoneNumber" name="phoneNumber" aria-describedby="phoneHelp" placeholder="">
+                    <input type="tel" class="form-control {{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}" id="phoneNumber" name="phoneNumber" v-model="phoneNumber" aria-describedby="phoneHelp" placeholder="">
                   </div>
                   <small id="phoneHelp" class="form-text text-muted">Your phone number won’t be used for anything except sending news alerts. If you text us back, we may engage in a conversation about the news.</small>
-                  @if ($errors->has('phoneNumber'))
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $errors->first('phoneNumber') }}</strong>
-                      </span>
-                  @endif
                 </div>
                 <div class="form-group">
                   <label for="optionalName">Name</label>
                   <input type="text" class="form-control {{ $errors->has('optionalName') ? ' is-invalid' : '' }}" id="optionalName" name="optionalName" placeholder="Tommy Trojan" aria-describedby="nameHelp">
                   <small id="nameHelp" class="form-text text-muted">Providing your name is totally optional.</small>
-                  @if ($errors->has('optionalName'))
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $errors->first('optionalName') }}</strong>
-                      </span>
-                  @endif
                 </div>
                 <button type="submit" class="btn btn-success">Subscribe</button>
+                <div v-if="successfulSignup" class="text-success pt-2">You’re now signed up for alerts! 🎉</div>
               </form>
 
               <!-- UNSUBSCRIBE FORM -->
-              <form id="unsubscribe-form" v-if="selected == 'unsubscribe'" method="POST" action="{{ route('unsubscribe') }}">
+              <form id="unsubscribe-form" v-if="selected == 'unsubscribe'" method="POST" v-on:submit.prevent="submitUnsubscribeForm">
                 @csrf
+                <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
                 <div class="form-group">
                   <label for="phoneNumber">Enter the phone number you used to sign up:</label>
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <div class="input-group-text">+1</div>
                     </div>
-                    <input type="tel" class="form-control {{ $errors->has('unsubscribePhone') ? ' is-invalid' : '' }}" name="unsubscribePhone" id="unsubscribePhone" aria-describedby="unsubPhoneHelp" placeholder="">
-                    @if ($errors->has('unsubscribePhone'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('unsubscribePhone') }}</strong>
-                        </span>
-                    @endif
+                    <input type="tel" class="form-control {{ $errors->has('unsubscribePhone') ? ' is-invalid' : '' }}" name="unsubscribePhone" id="unsubscribePhone" aria-describedby="unsubPhoneHelp" v-model="unsubscribePhone" placeholder="">
                   </div>
                   <small id="unsubPhoneHelp" class="form-text text-muted">You’ll get one last text confirming you unsubscribed.</small>
                 </div>
@@ -95,29 +86,21 @@
                 <div class="form-group">
                   <button type="submit" class="btn btn-danger">Unsubscribe</button>
                 </div>
+                <div v-if="successfulUnsub" class="text-success pt-2">OK, you’re unsubscribed. 👋</div>
               </form>
 
               <!-- ADMIN LOGIN -->
-              <form id="admin-login-form" v-if="selected == 'admin'" method="POST" action="{{route('login')}}">
+              <form id="admin-login-form" v-if="selected == 'admin'" method="POST" action="{{ route('login') }}">
                 @csrf
+                <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
                 <div class="form-group">
                   <label for="adminEmail">Email</label>
                   <input type="email" class="form-control {{ $errors->has('adminEmail') ? ' is-invalid' : '' }}" id="adminEmail" name="adminEmail" value="{{ old('adminEmail') }}" required placeholder="ttrojan@usc.edu">
-                  @if ($errors->has('adminEmail'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('adminEmail') }}</strong>
-                    </span>
-                  @endif
                 </div>
 
                 <div class="form-group">
                   <label for="adminPass">Password</label>
                   <input type="password" class="form-control {{ $errors->has('adminPass') ? ' is-invalid' : '' }}" id="adminPass" name="adminPass" required>
-                  @if ($errors->has('adminPass'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('adminPass') }}</strong>
-                    </span>
-                  @endif
                 </div>
 
                 <div class="form-row">
@@ -131,55 +114,62 @@
                 </div>
 
                 <div class="form-group mt-3">
-                  @if (Route::has('password.request'))
-                      <p><a href="{{ route('password.request') }}">
-                          {{ __('Forgot your password?') }}
-                      </a></p>
-                  @endif
-                  <p>If you don’t have a login, <a v-on:click="selected = 'request'">request one</a>. →</p>
+                  <p><a v-on:click="selected = 'passwordReset'; validationErrors = ''">Forgot your password?</a></p>
+                  <p>If you don’t have a login, <a v-on:click="selected = 'request'; validationErrors = ''">request one</a>. →</p>
+                </div>
+              </form>
+
+              <!-- PASSWORD RESET -->
+              <form id="password-reset-request-form" v-if="selected == 'passwordReset'" method="POST" v-on:submit.prevent="submitPWReq">
+                @csrf
+                <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
+                <div v-if="!successfulReset">
+                  <div class="form-group">
+                    <p><a v-on:click="selected = 'admin'; validationErrors = ''">← Nevermind… I remember my password</a></p>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="resetEmail">Enter the email address you use to sign in:</label>
+                    <input type="text" name="resetEmail" class="form-control" id="resetEmail" v-model="resetEmail">
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Reset password</button>
+                  </div>
+                </div>
+                <div v-if="successfulReset">
+                  <p><a v-on:click="selected = 'admin'; validationErrors = ''">← Return</a></p>
+                  <h4 class="mt-2">Check your email for a reset link!</h4>
                 </div>
               </form>
 
               <!-- REQUEST ACCESS -->
-              <form id="account-request-form" v-if="selected == 'request'" method="POST" action="{{ route('requestAcct') }}">
+              <form id="account-request-form" v-if="selected == 'request'" method="POST" v-on:submit.prevent="submitAcctReq">
                 @csrf
+                <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
                 <div class="form-group">
-                  <p><a v-on:click="selected = 'admin'">← Nevermind… I already have an account</a></p>
+                  <p><a v-on:click="selected = 'admin'; validationErrors = ''">← Nevermind… I already have an account</a></p>
                 </div>
 
                 <div class="form-group">
                   <label for="requestFirst">First name</label>
-                  <input type="text" name="requestFirst" class="form-control {{ $errors->has('requestFirst') ? ' is-invalid' : '' }}" id="requestFirst">
-                  @if ($errors->has('requestEmail'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('requestFirst') }}</strong>
-                    </span>
-                  @endif
+                  <input type="text" name="requestFirst" class="form-control {{ $errors->has('requestFirst') ? ' is-invalid' : '' }}" id="requestFirst" v-model="requestFirst">
                 </div>
 
                 <div class="form-group">
                   <label for="requestLast">Last name</label>
-                  <input type="text" name="requestLast" class="form-control {{ $errors->has('requestLast') ? ' is-invalid' : '' }}" id="requestLast">
-                  @if ($errors->has('requestEmail'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('requestLast') }}</strong>
-                    </span>
-                  @endif
+                  <input type="text" name="requestLast" class="form-control {{ $errors->has('requestLast') ? ' is-invalid' : '' }}" id="requestLast" v-model="requestLast">
                 </div>
 
                 <div class="form-group">
                   <label for="requestEmail">Email</label>
-                  <input type="text" name="requestEmail" class="form-control {{ $errors->has('requestEmail') ? ' is-invalid' : '' }}" id="requestEmail" placeholder="ttrojan@usc.edu">
-                  @if ($errors->has('requestEmail'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('requestEmail') }}</strong>
-                    </span>
-                  @endif
+                  <input type="text" name="requestEmail" class="form-control {{ $errors->has('requestEmail') ? ' is-invalid' : '' }}" id="requestEmail" placeholder="ttrojan@usc.edu" v-model="requestEmail">
                 </div>
 
                 <div class="form-group">
                   <button type="submit" class="btn btn-primary">Request account</button>
-                  <small class="form-text text-muted mt-2">Accounts are only for Annenberg Media staff, obviously. You’ll be notified by email once an editor approves your request.</small>
+                  <small class="form-text text-muted mt-2">Accounts are only for Annenberg Media staff, obviously. </small>
+                  <div v-if="successfulAcctReq" class="text-success pt-2">OK, your request was submitted. You’ll be notified by email once an editor approves it.</div>
                 </div>
               </form>
 
@@ -214,6 +204,125 @@
             @endif
 
             --}}
+
+            <script>
+            Vue.component('validation-errors', {
+              data(){
+                return {
+
+                }
+              },
+              props: ['errors'],
+              template: `<div v-if="validationErrors" class="form-group">
+              <div v-for="(value, key, index) in validationErrors" id="message" class="text-danger">
+                @{{ value }}
+              </div>
+              </div>`,
+              computed: {
+                validationErrors(){
+                  let errors = Object.values(this.errors);
+                  errors = errors.flat();
+                  return errors;
+                }
+              }
+            });
+
+            const landingApp = new Vue({
+              el: '#landingApp',
+              data:function(){
+                return {
+                  selected:"signup",
+                  validationErrors:"",
+                  phoneNumber:"",
+                  unsubscribePhone:"",
+                  requestFirst:"",
+                  requestLast:"",
+                  requestEmail:"",
+                  resetEmail:"",
+                  successfulSignup:false,
+                  successfulUnsub:false,
+                  successfulAcctReq:false,
+                  successfulReset:false
+                }
+              },
+              methods: {
+                submitSignupForm(){
+                  var self = this;
+                  self.successfulSignup = false;
+                  self.validationErrors = "";
+                  axios({
+                    method:"post",
+                    url:"/subscribe",
+                    data:{
+                      phoneNumber: self.phoneNumber
+                    },
+                  }).then(response => {
+                    self.successfulSignup = true;
+                  }).catch(error => {
+                    if (error.response.status == 422){
+                      self.validationErrors = error.response.data.errors;
+                    }
+                  })
+                },
+                submitUnsubscribeForm(){
+                  var self = this;
+                  self.successfulUnsub = false;
+                  self.validationErrors = "";
+                  axios({
+                    method:"post",
+                    url:"/unsubscribe",
+                    data:{
+                      unsubscribePhone: self.unsubscribePhone
+                    },
+                  }).then(response => {
+                    self.successfulUnsub = true;
+                  }).catch(error => {
+                    if (error.response.status == 422){
+                      self.validationErrors = error.response.data.errors;
+                    }
+                  })
+                },
+                submitAcctReq(){
+                  var self = this;
+                  self.validationErrors = "";
+                  axios({
+                    method:"post",
+                    url:"/request",
+                    data:{
+                      requestFirst: self.requestFirst,
+                      requestLast:self.requestLast,
+                      requestEmail: self.requestEmail
+                    },
+                  }).then(response => {
+                    self.successfulAcctReq = true;
+                  }).catch(error => {
+                    if (error.response.status == 422){
+                      self.validationErrors = error.response.data.errors;
+                    }
+                  })
+                },
+                submitPWReq(){
+                  var self = this;
+                  self.validationErrors = "";
+                  axios({
+                    method:"post",
+                    url:"{{route('createResetToken')}}",
+                    data:{
+                      resetEmail:self.resetEmail
+                    },
+                  }).then(response => {
+                    self.successfulReset = true;
+                    console.log(response);
+                  }).catch(error => {
+                    if (error.response.status == 422){
+                      console.log(response);
+                      self.validationErrors = error.response.data.errors;
+                    }
+                  })
+                }
+              }
+           });
+            </script>
 
     </body>
 </html>

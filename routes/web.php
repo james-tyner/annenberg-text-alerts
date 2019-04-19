@@ -17,8 +17,15 @@ Route::get('/', function () {
 
 // Users
 // Auth::routes();
+
+// Have this in case user reloads on login error screen
+Route::get("/login", function(){ return redirect("/"); });
+
 Route::post("/login", "LoginController@login")->name("login");
 Route::post("/request", "RequestAcctController@newRequest")->name("requestAcct");
+Route::post("/password/reset", "PasswordResetController@createAndSendToken")->name("createResetToken");
+Route::get("/password/reset/{token}", "PasswordResetController@showResetForm");
+Route::post("/password/new", "PasswordResetController@doThePWReset")->name("doPWReset");
 
 // Subscribers
 Route::post("/subscribe", "SubscribeController@subscribe")->name("subscribe");

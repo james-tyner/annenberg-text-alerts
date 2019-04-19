@@ -48868,15 +48868,6 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-var app = new Vue({
-  el: '#app',
-  data: function data() {
-    return {
-      selected: "signup"
-    };
-  }
-});
-
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
