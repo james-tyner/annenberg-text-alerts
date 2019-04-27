@@ -10810,3 +10810,118 @@ main #homepage-graphic img {
   color: #e3342f;
 }
 
+#alert-app {
+  display: grid;
+  grid-template-columns: 50% 35%;
+  grid-gap: 10%;
+}
+
+#alert-app #alert-composer {
+  grid-column: 1/2;
+}
+
+#alert-app #alert-composer #test-message-btn {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#alert-app #alert-preview {
+  grid-column: 2/3;
+  margin-right: 10%;
+}
+
+#alert-app #alert-preview #message-frame {
+  padding-top: 10px;
+  padding-bottom: 2em;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Source Sans Pro", sans-serif;
+  position: relative;
+}
+
+#alert-app #alert-preview #message-frame .message {
+  border-radius: 20px 20px 20px 20px;
+  margin: 30px 15px 10px;
+  padding: 15px 20px;
+  position: relative;
+}
+
+#alert-app #alert-preview #message-frame .message.to {
+  background-color: #2095FE;
+  color: #fff;
+  margin-left: 80px;
+}
+
+#alert-app #alert-preview #message-frame .message.to:after {
+  content: "Neon";
+  font-size: 0.7em;
+  color: #444444;
+  position: absolute;
+  top: -20px;
+  right: 0;
+}
+
+#alert-app #alert-preview #message-frame .message.from {
+  background-color: #E5E4E9;
+  color: #363636;
+  margin-right: 80px;
+}
+
+#alert-app #alert-preview #message-frame .message.from:after {
+  content: "Annenberg Media";
+  font-size: 0.7em;
+  color: #444444;
+  position: absolute;
+  top: -20px;
+  left: 0;
+}
+
+#alert-app #alert-preview #message-frame .message.to + .message.to,
+#alert-app #alert-preview #message-frame .message.from + .message.from {
+  margin-top: -7px;
+}
+
+#alert-app #alert-preview #message-frame .message.to + .message.to:after,
+#alert-app #alert-preview #message-frame .message.from + .message.from:after {
+  content: none;
+}
+
+#alert-app #alert-preview #message-frame .message:before {
+  border-color: #2095FE;
+  border-radius: 50% 50% 50% 50%;
+  border-style: solid;
+  border-width: 0 20px;
+  bottom: 0;
+  clip: rect(20px, 35px, 42px, 0px);
+  content: " ";
+  height: 40px;
+  position: absolute;
+  right: -50px;
+  width: 30px;
+  z-index: -1;
+}
+
+#alert-app #alert-preview #message-frame .message.from:before {
+  border-color: #E5E4E9;
+  left: -50px;
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+}
+
+#subscribers-page {
+  width: calc(100% - 1rem);
+}
+
+#subscribers-page .delete-icon {
+  width: auto;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+#subscribers-page .delete-icon:hover {
+  opacity: 1;
+}
+
+#users-page {
+  width: calc(100% - 1rem);
+}
+

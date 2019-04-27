@@ -38,3 +38,16 @@ Route::post("/unsubscribe", "SubscribeController@unsubscribe")->name("unsubscrib
 
 // For logged in admins
 Route::get('/dashboard', 'HomeController@index')->name('dashboard')->middleware('auth');
+
+Route::get("/alerts", "AlertsController@index")->middleware("auth");
+
+Route::post("/alerts/send", "AlertsController@send")->middleware("auth");
+Route::get("/alerts/send", function(){
+  return redirect("/alerts");
+})->middleware("auth");
+
+Route::get("/history", "HistoryController@index")->middleware("auth");
+
+Route::get("/subscribers", "ManageSubscribersController@index")->middleware("auth");
+
+Route::get("/users", "ManageUsersController@index")->middleware("auth", "checkSuper");

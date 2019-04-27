@@ -12,7 +12,8 @@ class SubscribeController extends Controller
       // Exists only for validation, does not render anything
 
       $this->validate($request, [
-       'phoneNumber' => 'required|digits:10|unique:subscribers,phone'
+       'phoneNumber' => 'required|digits:10|unique:subscribers,phone',
+       'optionalName' => 'nullable|sometimes|alpha_dash'
       ], [
        'phoneNumber.required' => 'You have to submit a US or Canada phone number to subscribe',
        'phoneNumber.digits' => 'You can only use a US or Canadian phone number that’s exactly 10 digits.',
@@ -21,9 +22,7 @@ class SubscribeController extends Controller
 
       $subscriber = new Subscriber();
       $subscriber->phone = request("phoneNumber");
-      if(null !== request("optionalName")){
-        $subscriber->name = request("optionalName");
-      }
+      $subscriber->name = request("optionalName");
       $subscriber->save();
     }
 

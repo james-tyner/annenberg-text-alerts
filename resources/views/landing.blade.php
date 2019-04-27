@@ -17,6 +17,10 @@
         </div>
       @endif
 
+      @if(Auth::check())
+        <a href="/dashboard" class="text-primary font-weight-bold">🏡 Hi, {{Auth::user()->fname}}. Return to Dashboard</a>
+      @endif
+
       <div id="form-with-tabs">
         <div id="tabs">
           <div class="tab" v-on:click="selected = 'signup'" :class="{'selected' : selected == 'signup'}">Sign up</div>
@@ -40,7 +44,7 @@
             </div>
             <div class="form-group">
               <label for="optionalName">Name</label>
-              <input type="text" class="form-control" id="optionalName" name="optionalName" placeholder="Tommy Trojan" aria-describedby="nameHelp">
+              <input type="text" class="form-control" id="optionalName" name="optionalName" v-model="optionalName" placeholder="Tommy Trojan" aria-describedby="nameHelp">
               <small id="nameHelp" class="form-text text-muted">Providing your name is totally optional.</small>
             </div>
             <button type="submit" class="btn btn-success">Subscribe</button>
@@ -193,6 +197,7 @@ const landingApp = new Vue({
       selected:"signup",
       validationErrors:"",
       phoneNumber:"",
+      optionalName:"",
       unsubscribePhone:"",
       requestFirst:"",
       requestLast:"",
@@ -213,7 +218,8 @@ const landingApp = new Vue({
         method:"post",
         url:"/subscribe",
         data:{
-          phoneNumber: self.phoneNumber
+          phoneNumber: self.phoneNumber,
+          optionalName: self.optionalName
         },
       }).then(response => {
         self.successfulSignup = true;
