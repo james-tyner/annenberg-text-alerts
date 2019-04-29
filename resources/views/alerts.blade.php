@@ -20,14 +20,14 @@
     <div class="form-group">
       <label for="alertImage">Image</label>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" name="alertImage" accept="image/*" id="alertImage">
+        <input type="file" class="custom-file-input" name="alertImage" accept="image/*" id="alertImage" v-on:change="loadFile">
         <label class="custom-file-label" for="alertImage">Choose image</label>
         <small id="imageHelp" class="form-text text-muted">The image cannot be larger than 5 MB.</small>
       </div>
       <div class="text-danger">{{$errors->first('alertImage')}}</div>
     </div>
     <div class="form-group">
-      <div id="test-message-btn" class="text-primary">Send a test message</div>
+      {{-- <div id="test-message-btn" class="text-primary">Send a test message</div> --}}
       <button type="submit" class="btn btn-danger mt-2">Send</button>
     </div>
   </form>
@@ -35,9 +35,10 @@
   {{-- ALERT PREVIEW --}}
   <div id="alert-preview" v-if="messageContent.length > 0">
     <h3>Preview</h3>
-    <div id="message-frame">
-      <div class="message from" v-html="messageContent"></div>
-    </div>
+      <div class="messages">
+        <div class="message from-them" v-html="messageContent"></div>
+        <img class="message from-them inVue" v-show="messageImage" :src="messageImage" id="message-image"></img>
+      </div>
   </div>
 </div>
 
@@ -46,17 +47,19 @@
 <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
 <script>
+
   let alertComposerApp = new Vue({
     el:"#alert-app",
     data:function(){
       return {
         alertLength:0,
-        messageContent:""
+        messageContent:"",
+        messageImage:""
       }
     },
     computed:{
       lengthClass:function(){
-        if (this.alertLength < 80){
+        if (this.alertLength < 130){
           return "text-muted"
         } else if (this.alertLength < 160){
           return "text-warning"
@@ -72,6 +75,11 @@
       updateMessage:function(event){
         this.alertLength = event.target.value.length;
         this.messageContent = event.target.value;
+      },
+      loadFile:function(event) {
+        this.messageImage = URL.createObjectURL(event.target.files[0]);
+
+        URL.revokeObjectURL(event.target.files[0]);
       }
     }
   })

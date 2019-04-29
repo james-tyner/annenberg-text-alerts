@@ -4,10 +4,10 @@
   .delete-icon {
     width:auto;
     cursor:pointer;
-    opacity:0.5;
 
     &:hover {
       opacity:1;
+      color:$red;
     }
   }
 }

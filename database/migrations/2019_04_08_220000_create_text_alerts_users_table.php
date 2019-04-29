@@ -23,6 +23,7 @@ class CreateTextAlertsUsersTable extends Migration
             $table->unsignedBigInteger('phone')->default(null);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

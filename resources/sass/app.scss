@@ -72,7 +72,9 @@ p > a {
 
 // Add styles for each page
 @import 'landing';
+@import 'chat-bubbles';
 @import 'dashboard';
 @import 'alerts';
 @import 'subscribers';
 @import 'users';
+@import 'history';

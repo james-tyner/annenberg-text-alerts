@@ -1,5 +1,7 @@
 @extends('layouts.base')
 
+@section("pagetitle") USC news wherever you are. @endsection
+
 @section("content")
 
   <nav>

@@ -5,9 +5,12 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class User extends Authenticatable
 {
-
+    use SoftDeletes;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -34,4 +37,8 @@ class User extends Authenticatable
     protected $attributes = [
       'super' => false
     ];
+
+    public function messages(){
+      return $this->hasMany('App\MessageRecord', 'sender', 'id');
+    }
 }

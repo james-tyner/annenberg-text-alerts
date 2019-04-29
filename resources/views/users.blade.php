@@ -34,8 +34,8 @@
                 <td>{{$request->lname}}</td>
                 <td>{{$request->email}}</td>
                 <td>
-                  <button class="btn btn-sm btn-success">Accept</button>
-                  <button class="btn btn-sm btn-danger">Deny</button>
+                  <button class="btn btn-sm btn-outline-success">Accept</button>
+                  <button class="btn btn-sm btn-outline-danger">Deny</button>
                 </td>
               </tr>
             @endforeach
@@ -80,8 +80,8 @@
               </select>
             </td>
             <td>
-              <button class="btn btn-sm btn-primary">Reset Password</button>
-              <button class="btn btn-sm btn-danger">Delete</button>
+              <button class="btn btn-sm btn-outline-primary">Reset Password</button>
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
             </td>
           @endif
         </tr>

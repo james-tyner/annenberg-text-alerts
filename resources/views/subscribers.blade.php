@@ -8,7 +8,7 @@
 
 <div id="subscribers-page" class="mt-4">
   <h3 class="mt-2 border-top pt-3 pb-2">{{sizeof($subscribers)}} subscribers</h3>
-  <div v-if="validationErrors" v-html="validationErrors" class="text-danger mt-2 mb-2"></div>
+  <div v-if="validationErrors" v-for="error in validationErrors" v-html="error[0]" class="text-danger mt-2 mb-2"></div>
 
   <table class="table table-striped table-responsive-sm">
     <thead>
@@ -26,9 +26,9 @@
         <tr>
           <td>{{$subscriber->phone}}</td>
           <td>{{$subscriber->name}}</td>
-          <td>{{date_format($subscriber->created_at, "M j, Y h:i a e")}}</td>
+          <td>{{date_format($subscriber->created_at->setTimezone('America/Los_Angeles'), "M j, Y")}}</td>
           @if(Auth::user()->super)
-            <td><img v-on:click="deleteSubscriber" data-phone="{{$subscriber->phone}}" class="delete-icon" src="{{asset('delete-icon.svg')}}"></td>
+            <td><i class="far fa-trash-alt delete-icon"></i></td>
           @endif
         </tr>
       @endforeach
@@ -62,6 +62,7 @@
         }).catch(error => {
           if (error.response.status == 422){
             self.validationErrors = error.response.data.errors;
+            console.log(error.response.data.errors);
           }
         })
       }

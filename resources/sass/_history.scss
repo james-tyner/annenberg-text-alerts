@@ -1,0 +1,15 @@
+#history-app {
+  width:calc(100% - 1rem);
+
+  #message-list {
+    i {
+      cursor:pointer;
+    }
+  }
+
+  #message-detail {
+    .messages {
+      width:255px;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+
+// SOURCE: https://codepen.io/samuelkraft/pen/Farhl
+
+.message {
+  max-width: 255px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  line-height: 24px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Source Sans Pro",sans-serif;
+}
+.message:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.clear {
+  clear: both;
+}
+
+.from-them {
+  position: relative;
+  padding: 10px 20px;
+  background: #E5E5EA;
+  border-radius: 25px;
+  color: black;
+  float: left;
+}
+.from-them:before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  bottom: -2px;
+  left: -7px;
+  height: 20px;
+  border-left: 20px solid #E5E5EA;
+  border-bottom-right-radius: 16px 14px;
+  -webkit-transform: translate(0, -2px);
+}
+.from-them:after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  bottom: -2px;
+  left: 4px;
+  width: 26px;
+  height: 20px;
+  background: white;
+  border-bottom-right-radius: 10px;
+  -webkit-transform: translate(-30px, -2px);
+}
+
+.from-them#message-image {
+  clear:both;
+  display:none;
+  width:100%;
+  max-width:255px;
+  padding:0;
+  filter:brightness(0.99);
+}
+
+.from-them#message-image.inVue {
+  display:block;
+}

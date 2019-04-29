@@ -36,3 +36,7 @@ $darkgray: #333333;
   border:1px solid $gray;
   border-radius:8px;
 }
+
+*.active small {
+  color:white !important;
+}

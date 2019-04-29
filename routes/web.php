@@ -47,6 +47,7 @@ Route::get("/alerts/send", function(){
 })->middleware("auth");
 
 Route::get("/history", "HistoryController@index")->middleware("auth");
+Route::get("/history/message/{id}", "HistoryController@getMessage");
 
 Route::get("/subscribers", "ManageSubscribersController@index")->middleware("auth");
 

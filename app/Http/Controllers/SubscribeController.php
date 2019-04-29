@@ -13,7 +13,7 @@ class SubscribeController extends Controller
 
       $this->validate($request, [
        'phoneNumber' => 'required|digits:10|unique:subscribers,phone',
-       'optionalName' => 'nullable|sometimes|alpha_dash'
+       'optionalName' => 'nullable|sometimes|string'
       ], [
        'phoneNumber.required' => 'You have to submit a US or Canada phone number to subscribe',
        'phoneNumber.digits' => 'You can only use a US or Canadian phone number that’s exactly 10 digits.',
