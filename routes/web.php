@@ -53,6 +53,10 @@ Route::get("/subscribers", "ManageSubscribersController@index")->middleware("aut
 
 Route::get("/users", "ManageUsersController@index")->middleware("auth", "checkSuper");
 
+Route::get("/users/profile", "LoginController@profile")->middleware("auth");
+Route::post("/users/profile", "LoginController@updateProfile")->middleware("auth");
+Route::post("/users/profile/password", "LoginController@changePassword")->middleware("auth");
+
 Route::post("/users/request/accept", "ManageUsersController@acceptRequest")->middleware("auth", "checkSuper");
 Route::post("/users/request/deny", "ManageUsersController@denyRequest")->middleware("auth", "checkSuper");
 

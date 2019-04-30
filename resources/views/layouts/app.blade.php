@@ -33,7 +33,16 @@
               </li>
             @endif
             <li class="nav-item">
-              <a class="nav-link" href="{{ url('/logout') }}">Log out</a>
+              {{-- <a class="nav-link" href="{{ url('/logout') }}">Log out</a> --}}
+              <div class="dropdown nav-item">
+                <a class="nav-link dropdown-toggle border-left" id="accountMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{Auth::user()->fname}}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountMenuButton">
+                  <a class="dropdown-item nav-link" href="{{url('/users/profile')}}">Edit profile</a>
+                  <a class="dropdown-item nav-link" href="{{ url('/logout') }}">Log out</a>
+                </div>
+              </div>
             </li>
           </ul>
         </div>

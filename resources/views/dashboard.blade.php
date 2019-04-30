@@ -12,6 +12,10 @@
   <section id="description">
     <h1>@yield('pagetitle')</h1>
 
+    @if(session('dashMessage'))
+      <p class="mt-3 mb-3 text-success">{{session('dashMessage')}}</p>
+    @endif
+
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="{{ url('/alerts') }}">Alerts</a>

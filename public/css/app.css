@@ -10702,6 +10702,10 @@ nav #logo {
   padding-right: 1rem;
 }
 
+.app nav #accountMenuButton {
+  cursor: pointer;
+}
+
 .app main {
   width: 100%;
   margin: 0.5rem 1rem;
