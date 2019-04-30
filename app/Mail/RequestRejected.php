@@ -9,25 +9,27 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class RequestRejected extends Mailable
 {
-    use Queueable, SerializesModels;
+  use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+  public $data;
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
-    {
-        return $this->view('view.name');
-    }
+  public function __construct($data)
+  {
+    $this->data = $data;
+  }
+
+  public function build()
+  {
+      $address = 'annmedia@usc.edu';
+      $subject = 'Your request for an Annenberg Media Text Alerts account was denied';
+      $name = 'USC Annenberg Media';
+
+      return $this->view('emails.request_reject')
+                  ->from($address, $name)
+                  ->replyTo($address, $name)
+                  ->subject($subject)
+                  ->with([
+                    'denier' => $this->data['denier']
+                  ]);
+  }
 }

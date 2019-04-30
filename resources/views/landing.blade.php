@@ -10,8 +10,8 @@
 
   <main id="landingApp">
     <section id="description">
-      <h1>Catchy words</h1>
-      <h5>Get the USC news that matters to you. Sign up for text alerts! We promise we’ll only text you when it’s important.</h5>
+      <h1>Keep up, wherever you are.</h1>
+      <h5>Sign up for Annenberg Media text alerts and get the USC news that matters to you. We promise we’ll only text you when it’s important.</h5>
 
       @if (isset($message) && isset($status))
         <div id="message" class="text-{{$status}}">

@@ -27,13 +27,18 @@ class ManageUsersController extends Controller
 
     public function acceptRequest(Request $request){
 
+      // check to see if user was previously deleted — if so, reactivate the old one rather than create a new one in order to avoid duplicate unique email addresses
       $checkPast = User::onlyTrashed()->where('email', $request->request_email)->get();
 
-      if($checkPast){
-        $checkPast->restore();
+      if(sizeof($checkPast) > 0){
+        // restore the previous account
+        $checkPast[0]->restore();
+
+        // delete the request for a new one
+        UserRequest::where('email', $request->request_email)->firstOrFail()->delete();
 
         return redirect()->back()->with([
-          'userMessage' => $checkPast->fname . " " . $checkPast->lname . " had an account before. That account has been restored with its previous password and phone number."
+          'userMessage' => $checkPast[0]->fname . " " . $checkPast[0]->lname . " had an account before. That account has been restored with its previous password and phone number."
         ]);
       } else {
         $newUser = new User;
@@ -42,9 +47,9 @@ class ManageUsersController extends Controller
         $newUser->lname = $request->request_lname;
         $newUser->email = $request->request_email;
 
-        // these will go through without validation
-        $newUser->password = null;
-        $newUser->phone = null;
+        // these will go through without validation. User is expected to change them immediately
+        $newUser->password = "00";
+        $newUser->phone = 0;
         $newUser->super = false;
 
         $newUser->save();
@@ -68,6 +73,8 @@ class ManageUsersController extends Controller
 
         Mail::to($request->request_email)->send(new RequestAccepted($data));
 
+        UserRequest::where('email', $request->request_email)->firstOrFail()->delete();
+
         return redirect()->back()->with([
           'userMessage' => "Successfully created an account for " . $request->request_fname . " " . $request->request_lname . ". They should receive a password reset email soon."
         ]);
@@ -75,14 +82,13 @@ class ManageUsersController extends Controller
     }
 
     public function denyRequest(Request $request){
-      $existingRequest = UserRequest::where('email', $request->request_email)->get();
+      $existingRequest = UserRequest::where('email', $request->request_email)->firstOrFail();
 
       $data = [
         'denier' => $request->denier
       ];
 
-      // SEND REJECTION EMAIL with something like "denied by Laura Davis"
-      // Mail::to($request->request_email)->send(new RejectionEmail($data));
+      Mail::to($request->request_email)->send(new RequestRejected($data));
 
       $existingRequest->delete();
 

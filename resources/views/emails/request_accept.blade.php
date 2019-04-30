@@ -9,8 +9,8 @@
 
         <h3>There are two things you need to do now:</h3>
         <ol>
-          <li>1. Reset your account password</a></li>
-          <li>2. Add your phone number to your account so you can send and receive test alerts</li>
+          <li>Reset your account password</a></li>
+          <li>Add your phone number to your account so you can be included on test alerts</li>
         </ol>
 
         <a href="{{ $setupLink }}"><div>Set up your account</div></a>
