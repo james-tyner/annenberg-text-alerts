@@ -10,24 +10,25 @@
 
   <main id="landingApp">
     <section id="description">
-      <h1>Keep up, wherever you are.</h1>
-      <h5>Sign up for Annenberg Media text alerts and get the USC news that matters to you. We promise we’ll only text you when it’s important.</h5>
+      <h1 id="keep-up">Keep up, wherever you are.</h1>
+      <h5 id="we-promise">Sign up for Annenberg Media text alerts and get the USC news that matters to you. We promise we’ll only text you when it’s important.</h5>
 
       @if (isset($message) && isset($status))
-        <div id="message" class="text-{{$status}}">
+        <div id="message" class="text-{{$status}} mt-3">
           {{$message}}
         </div>
       @endif
 
       @if(Auth::check())
-        <a href="/dashboard" class="text-primary font-weight-bold">🏡 Hi, {{Auth::user()->fname}}. Return to Dashboard</a>
+      </p><a href="/dashboard" class="text-primary font-weight-bold d-block mt-3">🏡 Hi, {{Auth::user()->fname}}. Return to Dashboard</a>
       @endif
+    </section>
 
       <div id="form-with-tabs">
         <div id="tabs">
           <div class="tab" v-on:click="selected = 'signup'" :class="{'selected' : selected == 'signup'}">Sign up</div>
           <div class="tab" v-on:click="selected = 'unsubscribe'" :class="{'selected' : selected == 'unsubscribe'}">Unsubscribe</div>
-          <div class="tab" v-on:click="selected = 'admin'" :class="{'selected' : selected == 'admin' || selected == 'request'}">Admin login</div>
+          <div class="tab" id="admin-tab" v-on:click="selected = 'admin'" :class="{'selected' : selected == 'admin' || selected == 'request'}">Admin login</div>
         </div>
         <div id="form-holder">
           <!-- SIGN UP FORM -->
@@ -160,10 +161,9 @@
 
     </div>
   </div>
-</section>
 
 <figure id="homepage-graphic">
-  <img src="https://scontent-lax3-2.xx.fbcdn.net/v/t39.8562-6/44612985_257609764945259_253729135791177728_n.jpg?_nc_cat=1&_nc_ht=scontent-lax3-2.xx&oh=9150a7f09462ad45024856efe9a4cf78&oe=5D388D3B">
+  <img src="{{asset('homepage-mockup.png')}}">
 </figure>
 </main>
 
