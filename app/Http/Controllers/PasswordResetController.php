@@ -35,17 +35,14 @@ class PasswordResetController extends Controller
       'created_at' => date("Y-m-d h:i:s")
     ]);
 
-    $resetLink = "http://localhost:8000/password/reset/" . $token;
+    $resetLink = $request->root() . "/password/reset/" . $token;
 
     $data = [
       'resetLink' => $resetLink,
       'userName' => $userName
     ];
 
-    error_log(print_r($data, true));
-
-    // Emails do not work!!!
-    // Mail::to($userEmail)->send(new PWResetEmail($data));
+    Mail::to($userEmail)->send(new PWResetEmail($data));
   }
 
   public function showResetForm($token)
@@ -86,6 +83,50 @@ class PasswordResetController extends Controller
 
     return view('landing', [
       "message" => "Your password is reset. Try to log in now.",
+      "status" => "success"
+    ]);
+  }
+
+  public function showNewUserForm($token){
+    $tokenData = DB::table('password_resets')
+    ->where('token', $token)->first();
+
+    if ( !$tokenData ){
+      return view('landing', [
+        "message" => "Sorry, that password reset request wasn’t valid. Try requesting a new password again.",
+        "status" => "danger"
+      ]);
+    }
+
+    return view('users.new_user', [
+      'token' => $token
+    ]);
+  }
+
+  public function setupNewUser(Request $request){
+
+    $password = $request->resetPassword;
+    $phoneNumber = $request->phoneNumber;
+
+    $tokenData = DB::table('password_resets')
+    ->where('token', $request->token)->first();
+
+    $user = User::where('email', $tokenData->email)->first();
+    if (!$user || !isset($user)){
+      return view('landing', [
+        "message" => "Sorry, that password reset request wasn’t valid. Try requesting a new password again.",
+        "status" => "danger"
+      ]);
+    }
+
+    $user->password = Hash::make($password);
+    $user->phone = $phoneNumber;
+    $user->update();
+
+    DB::table('password_resets')->where('email', $user->email)->delete();
+
+    return view('landing', [
+      "message" => "Your new account is set up. Try to log in now.",
       "status" => "success"
     ]);
   }

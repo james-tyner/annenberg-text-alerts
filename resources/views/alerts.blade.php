@@ -33,7 +33,7 @@
   </form>
 
   {{-- ALERT PREVIEW --}}
-  <div id="alert-preview" v-if="messageContent.length > 0">
+  <div id="alert-preview" v-if="messageContent.length > 0" v-cloak>
     <h3>Preview</h3>
       <div class="messages">
         <div class="message from-them" v-html="messageContent"></div>

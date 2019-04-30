@@ -5,10 +5,10 @@
     	</head>
     	<body>
     		<h2>Test Email</h2>
-        <p>Hey {{ $data->userName }}, here’s your password reset link:</p>
-        <a href="{{ $data->resetLink }}"><div>Reset Password</div></a>
+        <p>Hey {{ $userName }}, here’s your password reset link:</p>
+        <a href="{{ $resetLink }}"><div>Reset Password</div></a>
 
         <small>Or copy and paste this into your browser:</small>
-    		<small>{{ $data->resetLink }}</small>
+    		<small>{{ $resetLink }}</small>
     	</body>
     </html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Reset Password - Annenberg Media Text Alerts</title>
+  <title>Setup your account - Annenberg Media Text Alerts</title>
 
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -29,22 +29,32 @@
 
   <main id="pwResetApp">
     <section id="description">
-      <h1>Reset your password</h1>
+      <h1>Set up your new account</h1>
 
       <div id="form-with-tabs">
         <div id="form-holder">
           <!-- SIGN UP FORM -->
-          <form id="pw-reset-form" method="POST" action="{{route('doPWReset')}}">
+          <form id="pw-reset-form" method="POST" action="{{url('/users/setup')}}">
             @csrf
             <div v-if="!successfulReset">
               <div class="form-group">
                 <input type="hidden" name="token" value="{{$token}}">
-                <label for="resetEmail">Enter a new password :</label>
+                <label for="resetPassword">Enter a new password:</label>
                 <input type="password" name="resetPassword" class="form-control" id="resetPassword">
               </div>
 
               <div class="form-group">
-                <button type="submit" class="btn btn-primary">Reset password</button>
+                <label for="phoneNumber">Phone number</label>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">+1</div>
+                  </div>
+                  <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" v-model="phoneNumber" aria-describedby="phoneHelp" placeholder="">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Confirm Account</button>
               </div>
             </form>
           </div>

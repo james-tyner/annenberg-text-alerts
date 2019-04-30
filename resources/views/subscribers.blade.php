@@ -28,7 +28,7 @@
           <td>{{$subscriber->name}}</td>
           <td>{{date_format($subscriber->created_at->setTimezone('America/Los_Angeles'), "M j, Y")}}</td>
           @if(Auth::user()->super)
-            <td><i class="far fa-trash-alt delete-icon"></i></td>
+            <td><i class="far fa-trash-alt delete-icon" v-on:click="deleteSubscriber" data-phone="{{$subscriber->phone}}"></i></td>
           @endif
         </tr>
       @endforeach

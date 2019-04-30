@@ -4,6 +4,10 @@
   color: white !important;
 }
 
+*[v-cloak] {
+  display: none;
+}
+
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -10917,6 +10921,10 @@ main #homepage-graphic img {
 
 #users-page {
   width: calc(100% - 1rem);
+}
+
+#user-create-form {
+  max-width: 650px;
 }
 
 #history-app {

@@ -40,3 +40,7 @@ $darkgray: #333333;
 *.active small {
   color:white !important;
 }
+
+*[v-cloak]{
+  display:none;
+}

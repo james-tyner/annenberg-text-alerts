@@ -52,3 +52,17 @@ Route::get("/history/message/{id}", "HistoryController@getMessage");
 Route::get("/subscribers", "ManageSubscribersController@index")->middleware("auth");
 
 Route::get("/users", "ManageUsersController@index")->middleware("auth", "checkSuper");
+
+Route::post("/users/request/accept", "ManageUsersController@acceptRequest")->middleware("auth", "checkSuper");
+Route::post("/users/request/deny", "ManageUsersController@denyRequest")->middleware("auth", "checkSuper");
+
+Route::get("/users/setup/{token}", "PasswordResetController@showNewUserForm");
+Route::post("/users/setup", "PasswordResetController@setupNewUser");
+
+Route::post("/users/superness", "ManageUsersController@changeUserLevel")->middleware("auth", "checkSuper");
+
+Route::post("/users/reset", "ManageUsersController@resetPassword")->middleware("auth", "checkSuper");
+Route::post("/users/delete", "ManageUsersController@deleteUser")->middleware("auth", "checkSuper");
+
+Route::get("/users/add", "ManageUsersController@getDirectAddForm")->middleware("auth", "checkSuper");
+Route::post("/users/add", "ManageUsersController@directAddUser")->middleware("auth", "checkSuper");

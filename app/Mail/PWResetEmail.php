@@ -26,10 +26,11 @@ class PWResetEmail extends Mailable
 
         return $this->view('emails.reset')
                     ->from($address, $name)
-                    ->cc($address, $name)
-                    ->bcc($address, $name)
                     ->replyTo($address, $name)
                     ->subject($subject)
-                    ->with([ 'data' => $this->data ]);
+                    ->with([
+                      'resetLink' => $this->data['resetLink'],
+                      'userName' => $this->data['userName'] 
+                    ]);
     }
 }
