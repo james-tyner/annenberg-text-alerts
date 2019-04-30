@@ -10866,22 +10866,39 @@ main #homepage-graphic img {
 }
 
 #dashboard-main {
-  grid-template-rows: 15vh auto;
+  grid-template-rows: 15vh 17.5vh auto;
+  grid-template-columns: 45% auto;
+  grid-column-gap: 20%;
 }
 
-#dashboard-main h1 {
+#dashboard-main #description {
+  grid-column: 1/2;
+  grid-row: 2/4;
+}
+
+#dashboard-main #description h1 {
   padding-bottom: 0.5em;
   border-bottom: 1px solid #d8dadc;
 }
 
-#dashboard-main .nav-link {
+#dashboard-main #description .nav-link {
   font-weight: bold;
   color: #333333;
   font-size: 1.4em;
 }
 
-#dashboard-main .nav-link:hover {
+#dashboard-main #description .nav-link:hover {
   color: #e3342f;
+}
+
+#dashboard-main #quick-stats {
+  grid-column: 2/3;
+  grid-row: 3/4;
+}
+
+#dashboard-main #quick-stats a {
+  text-decoration: none;
+  color: inherit;
 }
 
 #alert-app {

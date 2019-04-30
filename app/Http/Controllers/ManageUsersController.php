@@ -37,9 +37,9 @@ class ManageUsersController extends Controller
         // delete the request for a new one
         UserRequest::where('email', $request->request_email)->firstOrFail()->delete();
 
-        return redirect()->back()->with([
-          'userMessage' => $checkPast[0]->fname . " " . $checkPast[0]->lname . " had an account before. That account has been restored with its previous password and phone number."
-        ]);
+        return redirect()->back()->with(
+          'userMessage', $checkPast[0]->fname . " " . $checkPast[0]->lname . " had an account before. That account has been restored with its previous password and phone number."
+        );
       } else {
         $newUser = new User;
 
@@ -75,9 +75,9 @@ class ManageUsersController extends Controller
 
         UserRequest::where('email', $request->request_email)->firstOrFail()->delete();
 
-        return redirect()->back()->with([
-          'userMessage' => "Successfully created an account for " . $request->request_fname . " " . $request->request_lname . ". They should receive a password reset email soon."
-        ]);
+        return redirect()->back()->with(
+          'userMessage', "Successfully created an account for " . $request->request_fname . " " . $request->request_lname . ". They should receive a password reset email soon."
+        );
       }
     }
 
@@ -92,9 +92,9 @@ class ManageUsersController extends Controller
 
       $existingRequest->delete();
 
-      return redirect()->back()->with([
-        'userMessage' => "You’ve denied " . $request->request_fname . " " . $request->request_lname . "’s account request."
-      ]);
+      return redirect()->back()->with(
+        'userMessage', "You’ve denied " . $request->request_fname . " " . $request->request_lname . "’s account request."
+      );
     }
 
     public function changeUserLevel(Request $request){
@@ -104,9 +104,9 @@ class ManageUsersController extends Controller
 
       $specificUser->save();
 
-      return redirect()->back()->with([
-        'userMessage' => "Successfully changed the permissions for " . $specificUser->fname . " " . $specificUser->lname . "."
-      ]);
+      return redirect()->back()->with(
+        'userMessage', "Successfully changed the permissions for " . $specificUser->fname . " " . $specificUser->lname . "."
+      );
     }
 
     public function resetPassword(Request $request){
@@ -132,9 +132,9 @@ class ManageUsersController extends Controller
       // Emails do not work!!!
       Mail::to($specificUser->email)->send(new PWResetEmail($data));
 
-      return redirect()->back()->with([
-        'userMessage' => $specificUser->fname . " " . $specificUser->lname . " should have a password reset link in their email inbox soon."
-      ]);
+      return redirect()->back()->with(
+        'userMessage', $specificUser->fname . " " . $specificUser->lname . " should have a password reset link in their email inbox soon."
+      );
     }
 
     public function deleteUser(Request $request){
@@ -142,9 +142,9 @@ class ManageUsersController extends Controller
 
       $specificUser->delete();
 
-      return redirect()->back()->with([
-        'userMessage' => "You’ve deactivated " . $specificUser->fname . " " . $specificUser->lname . "’s account."
-      ]);
+      return redirect()->back()->with(
+        'userMessage', "You’ve deactivated " . $specificUser->fname . " " . $specificUser->lname . "’s account."
+      );
     }
 
     public function getDirectAddForm(){

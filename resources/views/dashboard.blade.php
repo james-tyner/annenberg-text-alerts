@@ -31,8 +31,18 @@
         <a class="nav-link" href="{{ url('/logout') }}">Log out</a>
       </li>
     </ul>
+  </section>
 
-</section>
+  <section id="quick-stats">
+    <h3>At a Glance</h3>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><a href="/subscribers">{{$subscriberCount}} subscribers</a></li>
+      @if(Auth::user()->super)
+        <li class="list-group-item"><a href="/users">{{$pendingRequestCount}} pending account requests</a></li>
+      @endif
+      <li class="list-group-item"><a href="/alerts">Latest alert sent at {{date_format(date_create($latestMessage->created_at), "h:m a")}} on {{date_format(date_create($latestMessage->created_at), "M j, Y")}} by {{$latestMessage->fname . " " . $latestMessage->lname}}</a></li>
+    </ul>
+  </section>
 
 </main>
 

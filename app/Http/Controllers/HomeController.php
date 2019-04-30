@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Subscriber;
+use App\UserRequest;
+use App\MessageRecord;
+use DB;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+      $subscriberCount = Subscriber::count();
+      $pendingRequestCount = UserRequest::count();
+
+      $latestMessage = DB::table('message_history')
+            ->join('users', 'users.id', '=', 'message_history.sender')
+            ->select('message_history.*', 'users.fname', 'users.lname')
+            ->latest()
+            ->first();
+
+        return view('dashboard', [
+          'subscriberCount' => $subscriberCount,
+          'pendingRequestCount' => $pendingRequestCount,
+          'latestMessage' => $latestMessage
+        ]);
     }
 }

@@ -12,9 +12,11 @@
   <p class="mt-2">{{$userMessage}}</p>
 @endif
 
-<div id="users-page" class="mt-5">
-  {{-- <div v-if="validationErrors" v-html="validationErrors" class="text-danger mt-2 mb-2"></div> --}}
+@if(session('userMessage'))
+  <p class="mt-2 text-success">{{session('userMessage')}}</p>
+@endif
 
+<div id="users-page" class="mt-5">
   @if(Auth::user()->super)
     <div id="user-requests" class="border-bottom mb-2">
       <h2>User requests</h2>

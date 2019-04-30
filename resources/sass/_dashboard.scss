@@ -1,5 +1,11 @@
 #dashboard-main {
-  grid-template-rows:15vh auto;
+  grid-template-rows:15vh 17.5vh auto;
+  grid-template-columns:45% auto;
+  grid-column-gap:20%;
+
+  #description {
+    grid-column: 1 / 2;
+    grid-row:2 / 4;
 
     h1 {
       padding-bottom:0.5em;
@@ -15,4 +21,17 @@
         color:$red;
       }
     }
+  }
+
+  #quick-stats {
+    grid-column:2 / 3;
+    grid-row:3 / 4;
+
+    a {
+      text-decoration:none;
+      color:inherit;
+    }
+  }
+
+
 }

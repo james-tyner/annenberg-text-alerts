@@ -58,6 +58,7 @@ Route::post("/users/request/deny", "ManageUsersController@denyRequest")->middlew
 
 Route::get("/users/setup/{token}", "PasswordResetController@showNewUserForm");
 Route::post("/users/setup", "PasswordResetController@setupNewUser");
+Route::get("/users/setup", function(){ return redirect("/"); });
 
 Route::post("/users/superness", "ManageUsersController@changeUserLevel")->middleware("auth", "checkSuper");
 

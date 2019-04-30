@@ -13,14 +13,14 @@
     @csrf
     <div class="form-group">
       <label for="phoneNumber">Content</label>
-      <textarea class="form-control" id="alertText" name="alertText" aria-describedby="alertHelp" v-on:keyup="updateMessage" v-on:change="updateMessage"></textarea>
+      <textarea class="form-control" id="alertText" name="alertText" aria-describedby="alertHelp" v-on:keyup="updateMessage" v-on:change="updateMessage" value="{{old('alertText')}}"></textarea>
       <small id="alertHelp" class="form-text text-muted"><span v-html="alertLength" v-bind:class="lengthClass"></span><span class="text-muted">/160. For some users, alerts longer than 160 characters may be split into multiple messages.</span></small>
       <div class="text-danger">{{$errors->first('alertText')}}</div>
     </div>
     <div class="form-group">
       <label for="alertImage">Image</label>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" name="alertImage" accept="image/*" id="alertImage" v-on:change="loadFile">
+        <input type="file" class="custom-file-input" name="alertImage" accept="image/*" id="alertImage" v-on:change="loadFile" value="{{old('alertImage')}}">
         <label class="custom-file-label" for="alertImage">Choose image</label>
         <small id="imageHelp" class="form-text text-muted">The image cannot be larger than 5 MB.</small>
       </div>
