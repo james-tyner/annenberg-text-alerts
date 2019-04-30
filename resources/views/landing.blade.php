@@ -5,7 +5,7 @@
 @section("content")
 
   <nav>
-    <a href="//uscannenbergmedia.com"><img id="logo" src="http://interactives.uscannenbergmedia.com/media/FB%20horizontal%20lockup.png" alt="USC Annenberg Media"></a>
+    <a href="//uscannenbergmedia.com"><img id="logo" src="{{asset('FB horizontal lockup.png')}}" alt="USC Annenberg Media"></a>
   </nav>
 
   <main id="landingApp">
