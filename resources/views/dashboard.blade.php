@@ -44,7 +44,9 @@
       @if(Auth::user()->super)
         <li class="list-group-item"><a href="/users">{{$pendingRequestCount}} pending account requests</a></li>
       @endif
-      <li class="list-group-item"><a href="/alerts">Latest alert sent at {{date_format(date_create($latestMessage->created_at), "h:m a")}} on {{date_format(date_create($latestMessage->created_at), "M j, Y")}} by {{$latestMessage->fname . " " . $latestMessage->lname}}</a></li>
+      @if($latestMessage)
+        <li class="list-group-item"><a href="/alerts">Latest alert sent at {{date_format(date_create($latestMessage->created_at), "h:m a")}} on {{date_format(date_create($latestMessage->created_at), "M j, Y")}} by {{$latestMessage->fname . " " . $latestMessage->lname}}</a></li>
+      @endif
     </ul>
   </section>
 

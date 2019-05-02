@@ -45,12 +45,12 @@ class AlertsController extends Controller
       $client = new Client($account_sid, $auth_token);
 
       //placeholder
-      $url = "";
+      $imageUrl = "";
 
       // Store the uploaded file if there is one
       if ($request->alertImage){
         $path = $request->file('alertImage')->store('public/images');
-        $url = $request->root() . Storage::url($path);
+        $imageUrl = $request->root() . Storage::url($path);
 
         // make a Twilio request with the alert message and the image path
         foreach($subscribers as &$subscriber){
@@ -59,7 +59,7 @@ class AlertsController extends Controller
               array(
                   'from' => $twilio_number,
                   'body' => $request->alertText,
-                  'mediaUrl' => $url
+                  'mediaUrl' => $imageUrl
               )
           );
         }

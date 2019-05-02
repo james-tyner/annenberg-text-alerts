@@ -28,7 +28,8 @@
         </li>
       @empty
         <li class="media list-group-item d-flex justify-content-between align-items-center p-3">
-          <h4>Sorry, there were no results for “{{$search}}” 😭</h4>
+          @if($search)<h4 class="mb-0">Sorry, there were no results for “{{$search}}” 😭</h4>
+          @else<h4 class="mb-0">Nothing to show yet</h4>@endif
         </li>
       @endforelse
     </ul>
