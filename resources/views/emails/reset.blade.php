@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-    <html lang="en-US">
-    	<head>
-    		<meta charset="utf-8">
-    	</head>
-    	<body>
-    		<h2>Test Email</h2>
-        <p>Hey {{ $userName }}, here’s your password reset link:</p>
-        <a href="{{ $resetLink }}"><div>Reset Password</div></a>
+@extends('layouts.base_email')
 
-        <small>Or copy and paste this into your browser:</small>
-    		<small>{{ $resetLink }}</small>
-    	</body>
-    </html>
+@section('content')
+
+  <div id="content">
+    <h2>Resetting your password</h2>
+    <p class="greeting">Hey {{ $userName }},</p>
+
+    <p>Here’s your password reset link.</p>
+    <a class="button" href="{{ $resetLink }}"><div>Reset Password</div></a>
+
+    <div id="footer">
+      <small>Or copy and paste this into your browser: <a href="{{$resetLink}}">{{$resetLink}}</a></small>
+    </div>
+  </div>
+
+@endsection

@@ -15,9 +15,6 @@ Route::get('/', function () {
     return view('landing');
 })->name("landing");
 
-// Users
-// Auth::routes();
-
 // Have this in case user reloads on login error screen
 Route::get("/login", function(){ return redirect("/"); });
 

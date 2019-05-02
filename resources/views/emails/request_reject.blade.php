@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-    <html lang="en-US">
-    	<head>
-    		<meta charset="utf-8">
-    	</head>
-    	<body>
-    		<h2>Test Email</h2>
-        <p>Sorry, {{$denier}} denied your request to create an account to send text alerts at Annenberg Media.
+@extends('layouts.base_email')
 
-        <p>Please follow up with them if you have any questions.</p>
+@section('content')
 
-    	</body>
-    </html>
+    <div id="content">
+      <h2>Your account request was denied</h2>
+      
+      <p>Sorry, {{$denier}} denied your request to create an account to send text alerts at Annenberg Media.
+
+      <p>Please follow up with them if you have any questions.</p>
+
+    </div>
+
+@endsection
