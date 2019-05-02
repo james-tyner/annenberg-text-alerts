@@ -16,6 +16,7 @@ class RequestAcctController extends Controller
         'requestLast' => 'required'
       ], [
        'required' => 'Every field is required.',
+       'requestEmail.regex' => 'You must use your usc.edu email to request an account',
        'requestEmail.email' => 'That doesn’t look like a valid email address.'
       ]);
 

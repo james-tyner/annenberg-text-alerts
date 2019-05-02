@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Subscriber;
 use Validator;
+use Twilio\Rest\Client;
 
 class SubscribeController extends Controller
 {
@@ -37,7 +38,24 @@ class SubscribeController extends Controller
        'unsubscribePhone.exists' => 'That phone number isn’t subscribed to alerts.'
      ]);
 
+      // Find the person
       $requestedSubscriber = Subscriber::where("phone", request("unsubscribePhone"))->firstOrFail();
+
+      // Send one last text to confirm unsubscribe
+      $account_sid = env("TWILIO_ACCOUNT_SID");
+      $auth_token = env("TWILIO_AUTH_TOKEN");
+      $twilio_number = "+12136994054";
+      $client = new Client($account_sid, $auth_token);
+
+      $client->messages->create(
+          $requestedSubscriber->phone,
+          array(
+              'from' => $twilio_number,
+              'body' => "You’ve been unsubscribed from Annenberg Media text alerts."
+          )
+      );
+
+      // Delete them!
       $requestedSubscriber->delete();
 
       // TODO: Handle failure to find the number
