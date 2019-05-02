@@ -28,7 +28,7 @@
         <div id="tabs">
           <div class="tab" v-on:click="selected = 'signup'" :class="{'selected' : selected == 'signup'}">Sign up</div>
           <div class="tab" v-on:click="selected = 'unsubscribe'" :class="{'selected' : selected == 'unsubscribe'}">Unsubscribe</div>
-          <div class="tab" id="admin-tab" v-on:click="selected = 'admin'" :class="{'selected' : selected == 'admin' || selected == 'request'}">Admin login</div>
+          <div class="tab" id="admin-tab" v-on:click="selected = 'admin'" :class="{'selected' : selected == 'admin' || selected == 'request' || selected =='passwordReset'}">Admin login</div>
         </div>
         <div id="form-holder">
           <!-- SIGN UP FORM -->

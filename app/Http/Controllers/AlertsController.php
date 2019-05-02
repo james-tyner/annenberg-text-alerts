@@ -90,7 +90,7 @@ class AlertsController extends Controller
       $messageRecord->save();
 
 
-      return redirect("/dashboard");
+      return redirect("/history");
 
     }
 }
