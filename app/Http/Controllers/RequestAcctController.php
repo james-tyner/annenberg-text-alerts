@@ -11,7 +11,7 @@ class RequestAcctController extends Controller
 
     public function newRequest(Request $request){
       $this->validate($request, [
-        'requestEmail' => 'required|email',
+        'requestEmail' => 'required|email|regex:/usc\.edu$/',
         'requestFirst' => 'required',
         'requestLast' => 'required'
       ], [
