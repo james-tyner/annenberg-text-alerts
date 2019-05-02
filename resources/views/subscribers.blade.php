@@ -34,6 +34,7 @@
       @endforeach
     </tbody>
   </table>
+  {{ $subscribers->links() }}
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.3/vue.min.js"></script>
