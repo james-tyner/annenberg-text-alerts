@@ -26,53 +26,93 @@
 
       <div id="form-with-tabs">
         <div id="tabs">
-          <div class="tab" v-on:click="selected = 'signup'" :class="{'selected' : selected == 'signup'}">Sign up</div>
-          <div class="tab" v-on:click="selected = 'unsubscribe'" :class="{'selected' : selected == 'unsubscribe'}">Unsubscribe</div>
+          <div class="tab" id="admin-tab" v-on:click="selected = 'admin'" :class="{'selected' : selected == 'admin' || selected == 'request' || selected =='passwordReset'}">Admin login</div>
         </div>
         <div id="form-holder">
-          <!-- SIGN UP FORM -->
-          <form id="signup-form" v-if="selected == 'signup'" method="POST" v-on:submit.prevent="submitSignupForm">
+
+          <!-- ADMIN LOGIN -->
+          <form id="admin-login-form" v-if="selected == 'admin'" method="POST" action="{{ route('login') }}">
             @csrf
             <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
             <div class="form-group">
-              <label for="phoneNumber">Phone number</label>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">+1</div>
-                </div>
-                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" v-model="phoneNumber" aria-describedby="phoneHelp" placeholder="">
-              </div>
-              <small id="phoneHelp" class="form-text text-muted">Your phone number won’t be used for anything except sending news alerts. If you text us back, we may engage in a conversation about the news.</small>
-            </div>
-            <div class="form-group">
-              <label for="optionalName">Name</label>
-              <input type="text" class="form-control" id="optionalName" name="optionalName" v-model="optionalName" placeholder="Tommy Trojan" aria-describedby="nameHelp">
-              <small id="nameHelp" class="form-text text-muted">Providing your name is totally optional.</small>
-            </div>
-            <button type="submit" class="btn btn-success">Subscribe</button>
-            <div v-if="successfulSignup" class="text-success pt-2">You’re now signed up for alerts! 🎉</div>
-          </form>
-
-          <!-- UNSUBSCRIBE FORM -->
-          <form id="unsubscribe-form" v-if="selected == 'unsubscribe'" method="POST" v-on:submit.prevent="submitUnsubscribeForm">
-            @csrf
-            <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
-            <div class="form-group">
-              <label for="phoneNumber">Enter the phone number you used to sign up:</label>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">+1</div>
-                </div>
-                <input type="tel" class="form-control" name="unsubscribePhone" id="unsubscribePhone" aria-describedby="unsubPhoneHelp" v-model="unsubscribePhone" placeholder="">
-              </div>
-              <small id="unsubPhoneHelp" class="form-text text-muted">You’ll get one last text confirming you unsubscribed.</small>
+              <label for="adminEmail">Email</label>
+              <input type="email" class="form-control" id="adminEmail" name="adminEmail" required placeholder="ttrojan@usc.edu">
             </div>
 
             <div class="form-group">
-              <button type="submit" class="btn btn-danger">Unsubscribe</button>
+              <label for="adminPass">Password</label>
+              <input type="password" class="form-control" id="adminPass" name="adminPass" required>
             </div>
-            <div v-if="successfulUnsub" class="text-success pt-2">OK, you’re unsubscribed. 👋</div>
-          </form>
+
+            <div class="form-row">
+              <button type="submit" class="btn btn-success">Sign in</button>
+              {{-- <div class="form-check form-check-inline ml-2">
+              <input class="form-check-input" type="checkbox" value="remember" id="rememberMe" {{ old('rememberMe') ? 'checked' : '' }}>
+              <label class="form-check-label" for="rememberMe">
+              Keep me signed in
+            </label>
+          </div> --}}
+        </div>
+
+        <div class="form-group mt-3">
+          <p><a v-on:click="selected = 'passwordReset'; validationErrors = ''">Forgot your password?</a></p>
+          <p>If you don’t have a login, <a v-on:click="selected = 'request'; validationErrors = ''">request one</a>. →</p>
+        </div>
+      </form>
+
+      <!-- PASSWORD RESET -->
+      <form id="password-reset-request-form" v-if="selected == 'passwordReset'" method="POST" v-on:submit.prevent="submitPWReq">
+        @csrf
+        <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
+        <div v-if="!successfulReset">
+          <div class="form-group">
+            <p><a v-on:click="selected = 'admin'; validationErrors = ''">← Nevermind… I remember my password</a></p>
+          </div>
+
+          <div class="form-group">
+            <label for="resetEmail">Enter the email address you use to sign in:</label>
+            <input type="text" name="resetEmail" class="form-control" id="resetEmail" v-model="resetEmail">
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Reset password</button>
+          </div>
+        </div>
+        <div v-if="successfulReset">
+          <p><a v-on:click="selected = 'admin'; validationErrors = ''">← Return</a></p>
+          <h4 class="mt-2">Check your email for a reset link!</h4>
+        </div>
+      </form>
+
+      <!-- REQUEST ACCESS -->
+      <form id="account-request-form" v-if="selected == 'request'" method="POST" v-on:submit.prevent="submitAcctReq">
+        @csrf
+        <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
+        <div class="form-group">
+          <p><a v-on:click="selected = 'admin'; validationErrors = ''">← Nevermind… I already have an account</a></p>
+        </div>
+
+        <div class="form-group">
+          <label for="requestFirst">First name</label>
+          <input type="text" name="requestFirst" class="form-control" id="requestFirst" v-model="requestFirst">
+        </div>
+
+        <div class="form-group">
+          <label for="requestLast">Last name</label>
+          <input type="text" name="requestLast" class="form-control" id="requestLast" v-model="requestLast">
+        </div>
+
+        <div class="form-group">
+          <label for="requestEmail">Email</label>
+          <input type="text" name="requestEmail" class="form-control" id="requestEmail" placeholder="ttrojan@usc.edu" v-model="requestEmail">
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Request account</button>
+          <small class="form-text text-muted mt-2">Accounts are only for Annenberg Media staff, obviously. </small>
+          <div v-if="successfulAcctReq" class="text-success pt-2">OK, your request was submitted. You’ll be notified by email once an editor approves it.</div>
+        </div>
+      </form>
 
     </div>
   </div>
@@ -111,7 +151,7 @@ const landingApp = new Vue({
   el: '#landingApp',
   data:function(){
     return {
-      selected:"signup",
+      selected:"admin",
       validationErrors:"",
       phoneNumber:"",
       optionalName:"",

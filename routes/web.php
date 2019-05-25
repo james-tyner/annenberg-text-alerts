@@ -15,8 +15,9 @@ Route::get('/', function () {
     return view('landing');
 })->name("landing");
 
-// Have this in case user reloads on login error screen
-Route::get("/login", function(){ return redirect("/"); });
+Route::get("/login", function(){
+  return view("admin_landing");
+})->name("admin_landing");
 
 Route::post("/login", "LoginController@login")->name("login");
 Route::post("/request", "RequestAcctController@newRequest")->name("requestAcct");

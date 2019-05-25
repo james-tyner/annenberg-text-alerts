@@ -51,7 +51,7 @@ class PasswordResetController extends Controller
     ->where('token', $token)->first();
 
     if ( !$tokenData ){
-      return view('landing', [
+      return view('admin_landing', [
         "message" => "Sorry, that password reset request wasn’t valid. Try requesting a new password again.",
         "status" => "danger"
       ]);
@@ -81,7 +81,7 @@ class PasswordResetController extends Controller
 
     DB::table('password_resets')->where('email', $user->email)->delete();
 
-    return view('landing', [
+    return view('admin_landing', [
       "message" => "Your password is reset. Try to log in now.",
       "status" => "success"
     ]);
@@ -92,7 +92,7 @@ class PasswordResetController extends Controller
     ->where('token', $token)->first();
 
     if ( !$tokenData ){
-      return view('landing', [
+      return view('admin_landing', [
         "message" => "Sorry, that password reset request wasn’t valid. Try requesting a new password again.",
         "status" => "danger"
       ]);
@@ -113,7 +113,7 @@ class PasswordResetController extends Controller
 
     $user = User::where('email', $tokenData->email)->first();
     if (!$user || !isset($user)){
-      return view('landing', [
+      return view('admin_landing', [
         "message" => "Sorry, that password reset request wasn’t valid. Try requesting a new password again.",
         "status" => "danger"
       ]);
@@ -125,7 +125,7 @@ class PasswordResetController extends Controller
 
     DB::table('password_resets')->where('email', $user->email)->delete();
 
-    return view('landing', [
+    return view('admin_landing', [
       "message" => "Your new account is set up. Try to log in now.",
       "status" => "success"
     ]);

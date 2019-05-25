@@ -84,7 +84,7 @@ class AlertsController extends Controller
 
       $messageRecord->message = $request->alertText;
       if ($request->alertImage){
-        $messageRecord->mediaUrl = $url;
+        $messageRecord->mediaUrl = $imageUrl;
       }
 
       $messageRecord->save();

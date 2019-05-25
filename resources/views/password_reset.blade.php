@@ -52,7 +52,7 @@
       </section>
 
       <figure id="homepage-graphic">
-        <img src="https://scontent-lax3-2.xx.fbcdn.net/v/t39.8562-6/44612985_257609764945259_253729135791177728_n.jpg?_nc_cat=1&_nc_ht=scontent-lax3-2.xx&oh=9150a7f09462ad45024856efe9a4cf78&oe=5D388D3B">
+        <img src="{{asset('homepage-mockup.png')}}">
       </figure>
     </main>
 

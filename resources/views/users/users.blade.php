@@ -78,7 +78,7 @@
         <th scope="col">First name</th>
         <th scope="col">Last name</th>
         <th scope="col">Email</th>
-        <th scope="col">Phone</th>
+        {{-- <th scope="col">Phone</th> --}}
         @if(Auth::user()->super)
           <th scope-"col">User level</th>
           <th scope="col"><!-- Delete and reset password --></th>
@@ -91,7 +91,7 @@
           <td>{{$user->fname}}</td>
           <td>{{$user->lname}}</td>
           <td>{{$user->email}}</td>
-          <td>{{$user->phone}}</td>
+          {{-- <td>{{$user->phone}}</td> --}}
           @if(Auth::user()->super)
             <td>
               <form class="d-inline-flex" action="/users/superness" method="post">

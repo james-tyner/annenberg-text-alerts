@@ -19,7 +19,7 @@ class LoginController extends Controller
       if ($loginWasSuccessful){
         return redirect("/dashboard");
       } else {
-        return view('landing', [
+        return view('admin_landing', [
           "message" => "You couldn’t be logged in for some reason… sorry!",
           "status" => "danger"
         ]);
