@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Subscriber;
 use Validator;
 use Twilio\Rest\Client;
+use ReCaptcha;
+use Log;
 
 class SubscribeController extends Controller
 {
@@ -14,18 +16,20 @@ class SubscribeController extends Controller
 
       $this->validate($request, [
        'phoneNumber' => 'required|digits:10|unique:subscribers,phone',
-       'optionalName' => 'nullable|sometimes|string'
+       'optionalName' => 'nullable|sometimes|string',
+       'recaptchaResponse' => 'recaptcha',
       ], [
        'phoneNumber.required' => 'You have to submit a US or Canada phone number to subscribe',
        'phoneNumber.digits' => 'You can only use a US or Canadian phone number that’s exactly 10 digits.',
-       'phoneNumber.unique' => 'That phone number is already subscribed to alerts!'
+       'phoneNumber.unique' => 'That phone number is already subscribed to alerts!',
+       'recaptchaResponse.recaptcha' => 'You either failed or did not complete the reCAPTCHA test. Are you sure you’re not a robot? 🤖'
      ]);
 
       $subscriber = new Subscriber();
       $subscriber->phone = request("phoneNumber");
       $subscriber->name = request("optionalName");
       $subscriber->save();
-    }
+    } // end subscribe function
 
     public function unsubscribe(Request $request){
       // Exists only for validation, does not render anything
@@ -39,26 +43,30 @@ class SubscribeController extends Controller
      ]);
 
       // Find the person
-      $requestedSubscriber = Subscriber::where("phone", request("unsubscribePhone"))->firstOrFail();
+      try {
+        $requestedSubscriber = Subscriber::where("phone", request("unsubscribePhone"))->firstOrFail();
 
-      // Send one last text to confirm unsubscribe
-      $account_sid = env("TWILIO_ACCOUNT_SID");
-      $auth_token = env("TWILIO_AUTH_TOKEN");
-      $twilio_number = "+12136994054";
-      $client = new Client($account_sid, $auth_token);
+        // Delete them!
+        $requestedSubscriber->delete();
+      } catch (ModelNotFoundException $e){
+        abort(404);
+      }
 
-      $client->messages->create(
-          $requestedSubscriber->phone,
-          array(
-              'from' => $twilio_number,
-              'body' => "You’ve been unsubscribed from Annenberg Media text alerts."
-          )
-      );
 
-      // Delete them!
-      $requestedSubscriber->delete();
-
-      // TODO: Handle failure to find the number
-      // TODO: Send one last text to confirm being unsubscribed
+      // TODO: Send one last text to confirm unsubscribe
+      // $account_sid = env("TWILIO_ACCOUNT_SID");
+      // $auth_token = env("TWILIO_AUTH_TOKEN");
+      // $twilio_number = "+12136994054";
+      // $client = new Client($account_sid, $auth_token);
+      //
+      // $recipient = "+1" . $requestedSubscriber->phone;
+      //
+      // $client->messages->create(
+      //     $recipient,
+      //     array(
+      //         'from' => $twilio_number,
+      //         'body' => "You’ve been unsubscribed from Annenberg Media text alerts."
+      //     )
+      // );
     }
 }

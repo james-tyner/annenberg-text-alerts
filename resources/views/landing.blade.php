@@ -31,7 +31,7 @@
         </div>
         <div id="form-holder">
           <!-- SIGN UP FORM -->
-          <form id="signup-form" v-if="selected == 'signup'" method="POST" v-on:submit.prevent="submitSignupForm">
+          <form id="signup-form" v-show="selected == 'signup'" method="POST" v-on:submit.prevent="submitSignupForm">
             @csrf
             <validation-errors :errors="validationErrors" v-if="validationErrors"></validation-errors>
             <div class="form-group">
@@ -49,7 +49,8 @@
               <input type="text" class="form-control" id="optionalName" name="optionalName" v-model="optionalName" placeholder="Tommy Trojan" aria-describedby="nameHelp">
               <small id="nameHelp" class="form-text text-muted">Providing your name is totally optional.</small>
             </div>
-            <button type="submit" class="btn btn-success">Subscribe</button>
+            {!! ReCaptcha::htmlFormSnippet() !!}
+            <button type="submit" class="btn btn-success mt-2">Subscribe</button>
             <div v-if="successfulSignup" class="text-success pt-2">You’re now signed up for alerts! 🎉</div>
           </form>
 
@@ -65,7 +66,7 @@
                 </div>
                 <input type="tel" class="form-control" name="unsubscribePhone" id="unsubscribePhone" aria-describedby="unsubPhoneHelp" v-model="unsubscribePhone" placeholder="">
               </div>
-              <small id="unsubPhoneHelp" class="form-text text-muted">You’ll get one last text confirming you unsubscribed.</small>
+              {{-- <small id="unsubPhoneHelp" class="form-text text-muted">You’ll get one last text confirming you unsubscribed.</small> --}}
             </div>
 
             <div class="form-group">
@@ -82,7 +83,7 @@
 </figure>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.3/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.3/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
 <script>
@@ -94,7 +95,7 @@ Vue.component('validation-errors', {
   },
   props: ['errors'],
   template: `<div v-if="validationErrors" class="form-group">
-  <div v-for="(value, key, index) in validationErrors" id="message" class="text-danger">
+  <div v-for="(value, key, index) in validationErrors" id="message" class="text-danger mb-2">
   @{{ value }}
   </div>
   </div>`,
@@ -123,7 +124,13 @@ const landingApp = new Vue({
       successfulSignup:false,
       successfulUnsub:false,
       successfulAcctReq:false,
-      successfulReset:false
+      successfulReset:false,
+      recaptchaResponse:false
+    }
+  },
+  watch:{
+    selected:function(){
+      this.validationErrors = "";
     }
   },
   methods: {
@@ -131,12 +138,15 @@ const landingApp = new Vue({
       var self = this;
       self.successfulSignup = false;
       self.validationErrors = "";
+      self.recaptchaResponse = document.getElementById("g-recaptcha-response").value;
+
       axios({
         method:"post",
         url:"/subscribe",
         data:{
           phoneNumber: self.phoneNumber,
-          optionalName: self.optionalName
+          optionalName: self.optionalName,
+          recaptchaResponse: self.recaptchaResponse
         },
       }).then(response => {
         self.successfulSignup = true;
@@ -150,6 +160,7 @@ const landingApp = new Vue({
       var self = this;
       self.successfulUnsub = false;
       self.validationErrors = "";
+
       axios({
         method:"post",
         url:"/unsubscribe",
@@ -162,43 +173,8 @@ const landingApp = new Vue({
         if (error.response.status == 422){
           self.validationErrors = error.response.data.errors;
         }
-      })
-    },
-    submitAcctReq(){
-      var self = this;
-      self.validationErrors = "";
-      axios({
-        method:"post",
-        url:"/request",
-        data:{
-          requestFirst: self.requestFirst,
-          requestLast:self.requestLast,
-          requestEmail: self.requestEmail
-        },
-      }).then(response => {
-        self.successfulAcctReq = true;
-      }).catch(error => {
-        if (error.response.status == 422){
-          self.validationErrors = error.response.data.errors;
-        }
-      })
-    },
-    submitPWReq(){
-      var self = this;
-      self.validationErrors = "";
-      axios({
-        method:"post",
-        url:"{{route('createResetToken')}}",
-        data:{
-          resetEmail:self.resetEmail
-        },
-      }).then(response => {
-        self.successfulReset = true;
-        console.log(response);
-      }).catch(error => {
-        if (error.response.status == 422){
-          console.log(response);
-          self.validationErrors = error.response.data.errors;
+        if (error.response.status == 404){
+          self.validationErrors = "That phone number isn’t subscribed to alerts… so there’s no way to unsubscribe it!"
         }
       })
     }

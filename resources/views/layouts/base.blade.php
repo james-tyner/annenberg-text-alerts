@@ -43,6 +43,9 @@
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+  {{-- For ReCaptcha plugin --}}
+  {!! ReCaptcha::htmlScriptTagJsApi() !!}
+
 </head>
 <body>
 

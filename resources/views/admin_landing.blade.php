@@ -167,43 +167,6 @@ const landingApp = new Vue({
     }
   },
   methods: {
-    submitSignupForm(){
-      var self = this;
-      self.successfulSignup = false;
-      self.validationErrors = "";
-      axios({
-        method:"post",
-        url:"/subscribe",
-        data:{
-          phoneNumber: self.phoneNumber,
-          optionalName: self.optionalName
-        },
-      }).then(response => {
-        self.successfulSignup = true;
-      }).catch(error => {
-        if (error.response.status == 422){
-          self.validationErrors = error.response.data.errors;
-        }
-      })
-    },
-    submitUnsubscribeForm(){
-      var self = this;
-      self.successfulUnsub = false;
-      self.validationErrors = "";
-      axios({
-        method:"post",
-        url:"/unsubscribe",
-        data:{
-          unsubscribePhone: self.unsubscribePhone
-        },
-      }).then(response => {
-        self.successfulUnsub = true;
-      }).catch(error => {
-        if (error.response.status == 422){
-          self.validationErrors = error.response.data.errors;
-        }
-      })
-    },
     submitAcctReq(){
       var self = this;
       self.validationErrors = "";
